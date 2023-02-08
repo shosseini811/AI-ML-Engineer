@@ -3,6 +3,28 @@ import requests # import requests module
 
 app = Flask(__name__) # create an instance of Flask
 
+@app.route('/', methods=['GET'])
+def index():
+    return     f"""
+    <a href="/api/supervisors">GET /api/supervisors</a>
+    <br><br>
+    <p>Returns a list of supervisors sorted in alphabetical order.</p>
+    <h4>Response:</h4>
+    <p>A list of supervisor strings formatted as follows:
+    "jurisdiction - lastName, firstName"</p>
+    <p>Supervisors within the endpoint response payload are sorted in alphabetical order first by jurisdiction, then by lastName and firstName. Numeric jurisdictions are excluded from the response.</p>
+    <h4>Example Response:</h4>
+    <p>California - Doe, John<br>
+    Texas - Smith, Jane<br>
+    Washington - Johnson, Bob</p>
+    <h4>Status Codes:</h4>
+    <p>200 OK: The request was successful and the response contains the sorted list of supervisors.<br>
+    404 Not Found: The endpoint was not found.</p>
+    <h4>Note:</h4>
+    <p>This endpoint calls another API to retrieve the list of managers, which is then formatted and sorted to return the list of supervisors.</p>
+    """
+
+
 @app.route('/api/supervisors', methods=['GET'])
 def get_supervisors():
     response = requests.get('https://o3m5qixdng.execute-api.us-east-1.amazonaws.com/api/managers') # make a GET request to the specified AWS API
